@@ -1,1 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>PortInspect Pro - Sistema de Inspección Portuaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen" id="phoneScreen">
 
+<!-- SCREEN: WELCOME -->
+<div class="screen active" id="screen-welcome">
+<div class="login-container">
+<div class="login-brand">
+<div class="login-logo-circle"><span class="material-icons-round" style="font-size:48px;color:var(--gold)">anchor</span></div>
+<h1 class="app-name">PortInspect<span class="pro-badge">PRO</span></h1>
+<p class="app-tagline">Sistema de Inspección Portuaria</p>
+</div>
+<button class="btn-primary btn-full" onclick="navigateTo('screen-company-select')">
+<span>INGRESAR</span><span class="material-icons-round">arrow_forward</span>
+</button>
+<div class="login-footer"><p>Versión 2.2.0 · Multi-Tenant SaaS</p></div>
+</div>
+</div>
+
+<!-- SCREEN: COMPANY SELECT -->
+<div class="screen" id="screen-company-select">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-welcome')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Seleccioná tu Empresa</h3>
+</div></div>
+<div class="screen-body">
+<p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px">Elegí la empresa con la que vas a operar:</p>
+<div class="company-card selected" onclick="selectCompany(this,'HL Control Services S.A.'); navigateTo('screen-login')">
+<img src="hl-logo.png" alt="HL" class="company-logo">
+<div><h4>HL Control Services S.A.</h4><p>Rosario · Necochea · Bahía Blanca · San Lorenzo</p></div>
+<span class="material-icons-round company-check">check_circle</span>
+</div>
+<div class="company-card" onclick="selectCompany(this,'SGS Argentina S.A.'); navigateTo('screen-login')">
+<div class="company-logo-placeholder">SGS</div>
+<div><h4>SGS Argentina S.A.</h4><p>Ejemplo de otra empresa</p></div>
+<span class="material-icons-round company-check">radio_button_unchecked</span>
+</div>
+<div class="company-card" onclick="selectCompany(this,'Bureau Veritas'); navigateTo('screen-login')">
+<div class="company-logo-placeholder">BV</div>
+<div><h4>Bureau Veritas</h4><p>Ejemplo de otra empresa</p></div>
+<span class="material-icons-round company-check">radio_button_unchecked</span>
+</div>
+<button class="btn-add-shipper" style="margin-top:16px"><span class="material-icons-round">add</span><span>Registrar Nueva Empresa</span></button>
+</div>
+</div>
+
+<!-- SCREEN: LOGIN -->
+<div class="screen" id="screen-login">
+<div class="login-container">
+<div class="login-brand">
+<img src="hl-logo.png" alt="HL" class="splash-logo" style="width:140px;margin:0 auto 16px;display:block">
+<p class="app-tagline">HL Control Services S.A.</p>
+</div>
+<form class="login-form" onsubmit="event.preventDefault(); navigateTo('screen-splash')">
+<div class="input-group"><span class="material-icons-round input-icon">mail</span>
+<input type="email" placeholder="Email corporativo" value="j.perez@hlcontrol.com.ar"></div>
+<div class="input-group"><span class="material-icons-round input-icon">lock</span>
+<input type="password" placeholder="Contraseña" value="••••••••"></div>
+<button type="submit" class="btn-primary btn-full"><span>INICIAR SESIÓN</span><span class="material-icons-round">arrow_forward</span></button>
+<a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+<p style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-muted)">¿No tenés cuenta? <a href="#" style="color:var(--gold)">Solicitala a tu admin</a></p>
+</form>
+</div>
+</div>
+
+<!-- SCREEN: SPLASH -->
+<div class="screen" id="screen-splash">
+<div class="splash-container">
+<div class="splash-glow"></div>
+<img src="hl-logo.png" alt="HL" class="splash-logo" id="splashLogo">
+<div class="splash-text"><p class="splash-welcome">Bienvenido, Juan Pérez</p>
+<h2 class="splash-company">HL CONTROL SERVICES S.A.</h2></div>
+<div class="splash-loader"><div class="loader-bar"></div></div>
+<p class="splash-status">Sincronizando datos...</p>
+</div>
+</div>
+
+<!-- SCREEN: DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+<div class="top-bar">
+<div class="top-bar-left"><img src="hl-logo.png" alt="HL" class="top-bar-logo">
+<div><h3 class="top-bar-company">HL Control Services</h3><p class="top-bar-role">Inspector: Juan Pérez</p></div></div>
+<div class="top-bar-right">
+<button class="icon-btn notification-btn" onclick="toggleNotifications()"><span class="material-icons-round">notifications</span><span class="notification-badge">3</span></button>
+<button class="icon-btn" onclick="navigateTo('screen-settings')"><span class="material-icons-round">settings</span></button>
+</div>
+</div>
+<div class="screen-body dashboard-body">
+<!-- Stats -->
+<div class="stats-row">
+<div class="stat-card"><span class="material-icons-round stat-icon">directions_boat</span><div class="stat-value">3</div><div class="stat-label">Activas</div></div>
+<div class="stat-card"><span class="material-icons-round stat-icon">schedule</span><div class="stat-value">2</div><div class="stat-label">Pendientes</div></div>
+<div class="stat-card"><span class="material-icons-round stat-icon">check_circle</span><div class="stat-value">12</div><div class="stat-label">Completadas</div></div>
+</div>
+<button class="btn-new-operation" onclick="navigateTo('screen-new-op')"><span class="material-icons-round">add_circle</span><span>NUEVA OPERACIÓN / NOMINACIÓN</span></button>
+
+<!-- TABS -->
+<div class="tab-bar">
+<button class="tab active" onclick="switchTab(this,'tab-activas')">🟢 Activas <span class="tab-count">3</span></button>
+<button class="tab" onclick="switchTab(this,'tab-pendientes')">🟡 Pendientes <span class="tab-count">2</span></button>
+<button class="tab" onclick="switchTab(this,'tab-completadas')">✅ Completadas</button>
+</div>
+
+<!-- TAB: ACTIVAS -->
+<div class="tab-content active" id="tab-activas">
+<div class="operation-card" onclick="navigateTo('screen-shift-menu')">
+<div class="op-card-header">
+<div class="op-vessel"><span class="material-icons-round op-vessel-icon">directions_boat</span>
+<div><h4>MV JUPITER</h4><p class="op-voyage">Viaje: 2026-04/NEC</p></div></div>
+<span class="op-status status-loading">Cargando</span>
+</div>
+<div class="op-card-details">
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>Necochea - Terminal Quequén S.A. - Sitio 1</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>WHEAT - 35,000 MT</span></div>
+<div class="op-detail"><span class="material-icons-round">person</span><span>Cargill S.A.</span></div>
+</div>
+<div class="op-tags-row">
+<span class="seal-tag seal-required"><span class="material-icons-round">lock</span> PRECINTAR BODEGAS</span>
+</div>
+<div class="op-progress">
+<div class="progress-info"><span>Progreso</span><span class="progress-pct">68%</span></div>
+<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:68%"></div></div>
+<div class="progress-tons"><span>23,800 / 35,000 MT</span><span>Turno 6/12h</span></div>
+</div>
+<div class="op-card-action"><span>Ingresar al turno</span><span class="material-icons-round">chevron_right</span></div>
+</div>
+
+<div class="operation-card">
+<div class="op-card-header">
+<div class="op-vessel"><span class="material-icons-round op-vessel-icon">directions_boat</span>
+<div><h4>MV GRAN PARANÁ</h4><p class="op-voyage">Viaje: 2026-04/SLO</p></div></div>
+<span class="op-status status-loading">Cargando</span>
+</div>
+<div class="op-card-details">
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>San Lorenzo - Renova (Viterra)</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>SOYBEAN MEAL (25,000 MT) + CORN (15,000 MT)</span></div>
+<div class="op-detail"><span class="material-icons-round">person</span><span>Bunge Argentina S.A.</span></div>
+</div>
+<div class="op-tags-row">
+<span class="seal-tag seal-not-required"><span class="material-icons-round">lock_open</span> SIN PRECINTADO</span>
+<span class="multi-commodity-tag">2 Mercaderías</span>
+</div>
+<div class="op-progress">
+<div class="progress-info"><span>Progreso</span><span class="progress-pct">22%</span></div>
+<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:22%"></div></div>
+<div class="progress-tons"><span>8,800 / 40,000 MT</span><span>Turno 3/12h</span></div>
+</div>
+</div>
+
+<div class="operation-card">
+<div class="op-card-header">
+<div class="op-vessel"><span class="material-icons-round op-vessel-icon">directions_boat</span>
+<div><h4>MT ATLANTIC GLORY</h4><p class="op-voyage">Viaje: 2026-04/ROS</p></div></div>
+<span class="op-status status-loading">Cargando</span>
+</div>
+<div class="op-card-details">
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>Rosario - Terminal 6 (Cargill)</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>SOYBEAN - 28,000 MT</span></div>
+</div>
+<div class="op-tags-row">
+<span class="seal-tag seal-required"><span class="material-icons-round">lock</span> PRECINTAR BODEGAS</span>
+</div>
+<div class="op-progress">
+<div class="progress-info"><span>Progreso</span><span class="progress-pct">91%</span></div>
+<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:91%"></div></div>
+<div class="progress-tons"><span>25,480 / 28,000 MT</span><span>Turno 8/12h</span></div>
+</div>
+</div>
+</div>
+
+<!-- TAB: PENDIENTES -->
+<div class="tab-content" id="tab-pendientes">
+<div class="pending-card">
+<div class="pending-header"><span class="pending-status-badge status-rada">En Rada</span><span class="pending-eta">ETA: 08/04</span></div>
+<h4>MV STAR NAVIGATOR</h4>
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>Bahía Blanca - BACTSSA (asignado)</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>WHEAT - 42,000 MT</span></div>
+<div class="op-detail"><span class="material-icons-round">person</span><span>ADM Argentina S.A.</span></div>
+<div class="pending-footer"><span class="seal-tag seal-required"><span class="material-icons-round">lock</span> PRECINTAR</span></div>
+</div>
+<div class="pending-card">
+<div class="pending-header"><span class="pending-status-badge status-insp">Esperando Inspección Bodegas</span><span class="pending-eta">ETA: 10/04</span></div>
+<h4>MV OCEAN BREEZE</h4>
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>San Lorenzo - LDC General Lagos</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>CORN - 55,000 MT</span></div>
+<div class="op-detail"><span class="material-icons-round">person</span><span>Cofco International</span></div>
+<div class="pending-footer"><span class="seal-tag seal-not-required"><span class="material-icons-round">lock_open</span> SIN PRECINTADO</span></div>
+</div>
+</div>
+
+<!-- TAB: COMPLETADAS -->
+<div class="tab-content" id="tab-completadas">
+<div class="completed-card">
+<div class="op-card-header"><div class="op-vessel"><span class="material-icons-round op-vessel-icon">directions_boat</span>
+<div><h4>MV BLUE HORIZON</h4><p class="op-voyage">Completado: 28/03/2026</p></div></div>
+<span class="op-status status-done">✅ Finalizado</span></div>
+<div class="op-card-details">
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>Necochea - Terminal Quequén - Sitio 0</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>SOYBEAN - 32,500 MT (cargado final)</span></div>
+</div>
+</div>
+<div class="completed-card">
+<div class="op-card-header"><div class="op-vessel"><span class="material-icons-round op-vessel-icon">directions_boat</span>
+<div><h4>MV PAMPA SUR</h4><p class="op-voyage">Completado: 22/03/2026</p></div></div>
+<span class="op-status status-done">✅ Finalizado</span></div>
+<div class="op-card-details">
+<div class="op-detail"><span class="material-icons-round">location_on</span><span>Rosario - Dreyfus</span></div>
+<div class="op-detail"><span class="material-icons-round">eco</span><span>CORN - 41,200 MT</span></div>
+</div>
+</div>
+</div>
+<div style="height:80px"></div>
+</div>
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+<button class="nav-item active"><span class="material-icons-round">home</span><span>Inicio</span></button>
+<button class="nav-item"><span class="material-icons-round">list_alt</span><span>Historial</span></button>
+<button class="nav-item nav-center" onclick="navigateTo('screen-new-op')"><span class="material-icons-round">add</span></button>
+<button class="nav-item"><span class="material-icons-round">bar_chart</span><span>Reportes</span></button>
+<button class="nav-item" onclick="navigateTo('screen-settings')"><span class="material-icons-round">person</span><span>Perfil</span></button>
+</div>
+</div>
+
+<!-- SCREEN: NUEVA OPERACIÓN -->
+<div class="screen" id="screen-new-op">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Nueva Operación</h3></div></div>
+<div class="screen-body">
+<!-- Buque -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">directions_boat</span><h4>Datos del Buque</h4></div>
+<div class="form-group"><label>Nombre del Buque</label><input type="text" placeholder="Ej: MV JUPITER" class="form-input"></div>
+<div class="form-row">
+<div class="form-group flex-1"><label>Puerto</label>
+<select class="form-select" id="portSelect" onchange="updateBerths()">
+<option value="">Seleccionar...</option>
+<option value="rosario">Rosario</option>
+<option value="san-lorenzo">San Lorenzo / San Martín</option>
+<option value="necochea" selected>Necochea / Quequén</option>
+<option value="bahia-blanca">Bahía Blanca / Ing. White</option>
+</select>
+</div>
+<div class="form-group flex-1"><label>Muelle / Terminal</label>
+<select class="form-select" id="berthSelect"></select>
+</div>
+</div>
+<button class="btn-add-shipper btn-sm" onclick="alert('Agregar puerto/muelle personalizado')"><span class="material-icons-round">add</span><span>Agregar puerto o muelle manual</span></button>
+</div>
+
+<!-- Destino -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">flight_takeoff</span><h4>Destino</h4></div>
+<div class="form-group"><label>Puerto / País de Destino</label>
+<input type="text" class="form-input" list="destinos-list" placeholder="Ej: China, Argelia, Brasil...">
+<datalist id="destinos-list">
+<option value="China"><option value="Argelia"><option value="Brasil"><option value="India">
+<option value="Vietnam"><option value="Indonesia"><option value="Egipto"><option value="Irán">
+<option value="Bangladesh"><option value="Turquía"><option value="España"><option value="Italia">
+</datalist>
+<p style="font-size:11px;color:var(--text-muted);margin-top:4px">Los destinos se guardan en memoria para autocompletar</p>
+</div>
+</div>
+
+<!-- Mercaderías (múltiples) -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">eco</span><h4>Mercadería/s</h4></div>
+<div class="commodity-block" id="commodity-1">
+<div class="commodity-header"><span class="commodity-badge">Mercadería 1</span></div>
+<div class="form-group"><label>Tipo</label>
+<select class="form-select commodity-select" onchange="updateQualityPreview(this)">
+<option>Seleccionar...</option>
+<option>SOYBEAN</option><option>CORN</option><option selected>WHEAT</option>
+<option>SOYBEAN MEAL</option><option>SOYBEAN PELLETS</option>
+<option>SOYBEAN OIL</option><option>SUNFLOWER OIL</option>
+<option>SUNFLOWER SEEDS</option><option>URUGUAYAN SOYBEANS</option>
+</select></div>
+<div class="form-row">
+<div class="form-group flex-1"><label>Cantidad (MT)</label><input type="number" class="form-input" value="35000"></div>
+<div class="form-group flex-1"><label>Bodegas Asignadas</label><input type="text" class="form-input" placeholder="1,2,3,4,5"></div>
+</div>
+</div>
+<button class="btn-add-shipper" onclick="addCommodityBlock()"><span class="material-icons-round">add</span><span>Agregar otra Mercadería al buque</span></button>
+</div>
+
+<!-- Shipper -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">business</span><h4>Shipper / Cargador</h4></div>
+<div class="shipper-card">
+<div class="shipper-header"><span class="shipper-badge">Cargador 1</span></div>
+<div class="form-group"><label>Empresa</label>
+<select class="form-select"><option>Cargill S.A.</option><option>Bunge Argentina S.A.</option><option>ADM</option><option>Cofco International</option><option>LDC (Louis Dreyfus)</option><option>Viterra</option><option>Molinos</option></select></div>
+<div class="form-group"><label>Emails para reportes</label>
+<div class="email-tags"><span class="email-tag">ops@cargill.com <button>×</button></span>
+<input type="email" placeholder="+ agregar email" class="email-input"></div></div>
+</div>
+<button class="btn-add-shipper"><span class="material-icons-round">add</span><span>Agregar otro Cargador</span></button>
+</div>
+
+<!-- Precintado -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">lock</span><h4>Precintado de Bodegas (Sealing)</h4></div>
+<div class="seal-toggle-row">
+<label class="seal-label">¿Esta operación requiere precintado?</label>
+<div class="toggle-switch-container">
+<button class="toggle-switch active" onclick="toggleSeal(this)">
+<span class="toggle-switch-dot"></span>
+</button>
+<span class="toggle-switch-text">SÍ - Obligatorio</span>
+</div>
+</div>
+<p style="font-size:12px;color:var(--text-secondary);margin-top:8px">Si se activa, el inspector no podrá finalizar la operación sin confirmar el precintado y adjuntar fotos.</p>
+</div>
+
+<!-- Turnos -->
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">schedule</span><h4>Configuración</h4></div>
+<div class="form-group"><label>Duración del turno</label>
+<div class="chip-group"><button class="chip" onclick="selectChip(this)">6 horas</button><button class="chip active" onclick="selectChip(this)">12 horas</button><button class="chip" onclick="selectChip(this)">8 horas</button></div></div>
+<div class="form-row">
+<div class="form-group flex-1"><label>Nro de Bodegas</label>
+<div class="stepper"><button class="stepper-btn" onclick="stepValue(this,-1)">−</button><span class="stepper-value">5</span><button class="stepper-btn" onclick="stepValue(this,1)">+</button></div></div>
+<div class="form-group flex-1"><label>ETA</label><input type="date" class="form-input" value="2026-04-06"></div>
+</div>
+<div class="form-group"><label>Código de Servicio Requerido</label><input type="text" class="form-input" placeholder="Ej: XX/XX/XXXX - XX:XX HS"></div>
+</div>
+
+<button class="btn-primary btn-full btn-lg" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">check_circle</span><span>CREAR OPERACIÓN</span></button>
+<div style="height:30px"></div>
+</div>
+</div>
+
+<!-- SCREEN: SHIFT MENU -->
+<div class="screen" id="screen-shift-menu">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">arrow_back</span></button>
+<div><h3 class="top-bar-title">MV JUPITER</h3><p class="top-bar-subtitle">Necochea · WHEAT · SG-P-00-22</p></div></div>
+<div class="top-bar-right"><span class="op-status status-loading" style="font-size:11px">Cargando</span></div></div>
+<div class="screen-body">
+<div class="shift-info-card">
+<div class="shift-time"><span class="material-icons-round">schedule</span><div><p class="shift-label">Turno Actual</p><h3 class="shift-period">06:00 - 18:00 hs</h3></div></div>
+<div class="shift-date"><span class="shift-day">06</span><span class="shift-month">ABR</span></div>
+</div>
+<!-- Seal reminder -->
+<div class="seal-reminder"><span class="material-icons-round">lock</span><div><strong>PRECINTAR BODEGAS</strong><p>Esta operación requiere precintado al finalizar la carga</p></div></div>
+<div class="summary-card"><h4>Resumen de Carga</h4>
+<div class="summary-grid">
+<div class="summary-item"><span class="summary-value">23,800</span><span class="summary-label">MT Acumuladas</span></div>
+<div class="summary-item"><span class="summary-value">4,200</span><span class="summary-label">MT Este Turno</span></div>
+<div class="summary-item"><span class="summary-value">11,200</span><span class="summary-label">MT Remanente</span></div>
+<div class="summary-item"><span class="summary-value">6</span><span class="summary-label">Turnos</span></div>
+</div></div>
+<div class="section-header"><h3>Carga de Datos</h3></div>
+<div class="menu-card" onclick="navigateTo('screen-quantity')">
+<div class="menu-card-icon" style="background:linear-gradient(135deg,#2563eb,#1d4ed8)"><span class="material-icons-round">scale</span></div>
+<div class="menu-card-info"><h4>Cantidad Embarcada</h4><p>Toneladas por bodega del turno</p></div>
+<div class="menu-card-status completed"><span class="material-icons-round">check_circle</span></div></div>
+<div class="menu-card" onclick="navigateTo('screen-quality')">
+<div class="menu-card-icon" style="background:linear-gradient(135deg,#059669,#047857)"><span class="material-icons-round">science</span></div>
+<div class="menu-card-info"><h4>Calidad - WHEAT</h4><p>Parámetros según SG-P-00-22</p></div>
+<div class="menu-card-status pending"><span class="material-icons-round">pending</span></div></div>
+<div class="menu-card" onclick="navigateTo('screen-sof')">
+<div class="menu-card-icon" style="background:linear-gradient(135deg,#d97706,#b45309)"><span class="material-icons-round">event_note</span></div>
+<div class="menu-card-info"><h4>Relación de Hechos (SOF)</h4><p>Eventos, demoras y novedades</p></div>
+<div class="menu-card-status in-progress"><span class="material-icons-round">timelapse</span></div></div>
+<div class="menu-card">
+<div class="menu-card-icon" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)"><span class="material-icons-round">photo_camera</span></div>
+<div class="menu-card-info"><h4>Fotos y Documentos</h4><p>Calados, precintos, incidencias</p></div>
+<div class="menu-card-status"><span class="material-icons-round">chevron_right</span></div></div>
+<button class="btn-send-report" onclick="navigateTo('screen-report')"><span class="material-icons-round">send</span>
+<div><span class="btn-send-title">FINALIZAR TURNO Y ENVIAR REPORTE</span><span class="btn-send-sub">Se enviará a 2 destinatarios</span></div></button>
+<div style="height:20px"></div>
+</div>
+</div>
+
+<!-- SCREEN: QUANTITY -->
+<div class="screen" id="screen-quantity">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Cantidad Embarcada</h3></div></div>
+<div class="screen-body">
+<div class="info-banner"><span class="material-icons-round">info</span><p>Ingresá las toneladas cargadas en cada bodega. Totales automáticos.</p></div>
+<div class="holds-container">
+<div class="hold-card"><div class="hold-header"><span class="hold-number">Bodega 1</span><span class="hold-accumulated">Acum: 4,800 MT</span></div><div class="hold-input-group"><input type="number" class="hold-input" value="850"><span class="hold-unit">MT</span></div></div>
+<div class="hold-card"><div class="hold-header"><span class="hold-number">Bodega 2</span><span class="hold-accumulated">Acum: 5,200 MT</span></div><div class="hold-input-group"><input type="number" class="hold-input" value="920"><span class="hold-unit">MT</span></div></div>
+<div class="hold-card"><div class="hold-header"><span class="hold-number">Bodega 3</span><span class="hold-accumulated">Acum: 5,100 MT</span></div><div class="hold-input-group"><input type="number" class="hold-input" value="780"><span class="hold-unit">MT</span></div></div>
+<div class="hold-card"><div class="hold-header"><span class="hold-number">Bodega 4</span><span class="hold-accumulated">Acum: 4,600 MT</span></div><div class="hold-input-group"><input type="number" class="hold-input" value="900"><span class="hold-unit">MT</span></div></div>
+<div class="hold-card"><div class="hold-header"><span class="hold-number">Bodega 5</span><span class="hold-accumulated">Acum: 4,100 MT</span></div><div class="hold-input-group"><input type="number" class="hold-input" value="750"><span class="hold-unit">MT</span></div></div>
+</div>
+<div class="totals-card">
+<div class="total-row"><span>Total este turno</span><span class="total-value highlight">4,200 MT</span></div>
+<div class="total-row"><span>Total acumulado</span><span class="total-value">23,800 MT</span></div>
+<div class="total-row"><span>Remanente</span><span class="total-value">11,200 MT</span></div>
+</div>
+<button class="btn-primary btn-full" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">save</span><span>GUARDAR CANTIDADES</span></button>
+<div style="height:20px"></div>
+</div>
+</div>
+
+<!-- SCREEN: QUALITY (WHEAT example) -->
+<div class="screen" id="screen-quality">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Calidad - WHEAT</h3></div>
+<div class="top-bar-right"><span style="font-size:11px;color:var(--text-muted)">SG-P-00-22</span></div>
+</div>
+<div class="screen-body">
+<div class="quality-lot-header">
+<div class="lot-info"><span class="lot-badge">Lote #4</span><span class="lot-tons">2,500 MT</span></div>
+<div class="lot-nav"><button class="lot-nav-btn"><span class="material-icons-round">chevron_left</span></button><span>4/6</span><button class="lot-nav-btn"><span class="material-icons-round">chevron_right</span></button></div>
+</div>
+<div class="quality-params">
+<div class="param-card ok"><div class="param-header"><span class="param-name">Protein / Proteína</span><span class="param-limit">Mín: 10.5%</span></div><div class="param-input-row"><input type="number" step="0.1" class="param-input" value="11.2"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Moisture / Humedad</span><span class="param-limit">Máx: 14.0%</span></div><div class="param-input-row"><input type="number" step="0.1" class="param-input" value="13.2"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card warning"><div class="param-header"><span class="param-name">FM / Materias Extrañas</span><span class="param-limit">Máx: 0.50%</span></div><div class="param-input-row"><input type="number" step="0.01" class="param-input" value="0.75"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">warning</span></div><div class="param-alert"><span class="material-icons-round">error</span><span>¡Fuera de tolerancia!</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Broken Grains / Quebrados</span><span class="param-limit">Máx: 30.0%</span></div><div class="param-input-row"><input type="number" step="0.1" class="param-input" value="8.5"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Total Damaged / Dañados</span><span class="param-limit">Máx: 0.80%</span></div><div class="param-input-row"><input type="number" step="0.01" class="param-input" value="0.20"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Test Weight / P. Hectolítrico</span><span class="param-limit">Mín: 76 kg/hl</span></div><div class="param-input-row"><input type="number" step="0.1" class="param-input" value="78.5"><span class="param-unit">kg/hl</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Mouldy / pH</span><span class="param-limit">—</span></div><div class="param-input-row"><input type="number" step="0.01" class="param-input" value="0.00"><span class="param-unit">%</span><span class="param-status-icon material-icons-round">check_circle</span></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Insects / Insectos</span><span class="param-limit">Free</span></div><div class="param-toggle"><button class="toggle-btn active">FREE ✓</button><button class="toggle-btn danger">DETECTED</button></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Temperature °C</span><span class="param-limit">—</span></div>
+<div class="form-row" style="gap:8px"><div class="flex-1"><label style="font-size:10px;color:var(--text-muted)">Ambiente</label><input type="number" class="param-input" value="20"></div><div class="flex-1"><label style="font-size:10px;color:var(--text-muted)">Mercadería</label><input type="number" class="param-input" value="25"></div></div></div>
+<div class="param-card ok"><div class="param-header"><span class="param-name">Holds / Bodegas</span><span class="param-limit">—</span></div><div class="param-input-row"><input type="text" class="param-input" value="1-2-3" style="font-size:14px"></div></div>
+</div>
+<button class="btn-add-shipper" style="margin-bottom:12px"><span class="material-icons-round">add</span><span>Agregar parámetro de calidad</span></button>
+<button class="btn-photo"><span class="material-icons-round">photo_camera</span><span>Adjuntar foto de la muestra</span></button>
+<button class="btn-primary btn-full" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">save</span><span>GUARDAR LOTE</span></button>
+<div style="height:20px"></div>
+</div>
+</div>
+
+<!-- SCREEN: SOF -->
+<div class="screen" id="screen-sof">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Relación de Hechos</h3></div>
+<div class="top-bar-right"><button class="icon-btn gold" onclick="document.getElementById('newEventModal').classList.add('show')"><span class="material-icons-round">add</span></button></div></div>
+<div class="screen-body">
+<div class="timeline">
+<div class="timeline-item"><div class="timeline-dot green"></div><div class="timeline-content"><div class="timeline-time">06:00</div><div class="timeline-event">Inicio de turno</div><div class="timeline-desc">Inspector J. Pérez asume la guardia</div></div></div>
+<div class="timeline-item"><div class="timeline-dot green"></div><div class="timeline-content"><div class="timeline-time">06:15</div><div class="timeline-event">Reanudación de carga</div><div class="timeline-desc">Bodega 3 - Cinta transportadora operativa</div></div></div>
+<div class="timeline-item"><div class="timeline-dot red"></div><div class="timeline-content"><div class="timeline-time">09:45</div><div class="timeline-event">Demora por lluvia</div><div class="timeline-desc">Se cierran tapas de bodegas 1, 2 y 3.</div><div class="timeline-photos"><span class="material-icons-round">photo</span> 2 fotos</div></div></div>
+<div class="timeline-item"><div class="timeline-dot green"></div><div class="timeline-content"><div class="timeline-time">11:30</div><div class="timeline-event">Reanudación de carga</div><div class="timeline-desc">Cesa la lluvia. Se abren todas las bodegas.</div></div></div>
+<div class="timeline-item current"><div class="timeline-dot pulse"></div><div class="timeline-content"><div class="timeline-time">16:30</div><div class="timeline-event">En curso...</div><div class="timeline-desc">Carga en bodegas 4 y 5.</div></div></div>
+</div>
+</div>
+<div class="modal-overlay" id="newEventModal">
+<div class="modal-card"><div class="modal-header"><h4>Nuevo Evento</h4><button class="icon-btn" onclick="document.getElementById('newEventModal').classList.remove('show')"><span class="material-icons-round">close</span></button></div>
+<div class="modal-body">
+<div class="form-group"><label>Hora</label><input type="time" class="form-input" value="16:30"></div>
+<div class="form-group"><label>Evento</label><select class="form-select"><option>Inicio de carga</option><option>Parada de carga</option><option selected>Demora por lluvia</option><option>Falla de cinta/grúa</option><option>Cambio de bodega</option><option>Reanudación de carga</option><option>Muestreo de calidad</option><option>Fin de turno</option></select></div>
+<div class="form-group"><label>Comentarios</label><textarea class="form-textarea" rows="3" placeholder="Describir..."></textarea></div>
+<button class="btn-primary btn-full" onclick="document.getElementById('newEventModal').classList.remove('show')"><span class="material-icons-round">save</span><span>GUARDAR</span></button>
+</div></div>
+</div>
+</div>
+
+<!-- SCREEN: REPORT -->
+<div class="screen" id="screen-report">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Reporte del Turno</h3></div></div>
+<div class="screen-body">
+<div class="report-preview">
+<div class="report-header-section">
+<img src="hl-logo.png" alt="HL" class="report-logo">
+<div class="report-title-block"><h3>LOADING REPORT</h3><p>HL Control Services S.A. · SG-P-00-22</p></div>
+</div>
+<div class="report-table">
+<div class="report-row"><span class="report-label">BUQUE</span><span class="report-value">MV JUPITER</span></div>
+<div class="report-row"><span class="report-label">PUERTO</span><span class="report-value">Necochea</span></div>
+<div class="report-row"><span class="report-label">MUELLE</span><span class="report-value">Terminal Quequén - Sitio 1</span></div>
+<div class="report-row"><span class="report-label">DESTINO</span><span class="report-value">Argelia</span></div>
+<div class="report-row"><span class="report-label">MERCADERÍA</span><span class="report-value">WHEAT</span></div>
+<div class="report-row"><span class="report-label">CARGADOR</span><span class="report-value">Cargill S.A.</span></div>
+<div class="report-row"><span class="report-label">BODEGAS Nº</span><span class="report-value">1-2-3-4-5</span></div>
+</div>
+<div class="report-section-title">CANTIDADES (QUANTITIES)</div>
+<div class="report-table compact">
+<div class="report-row header"><span>Hold</span><span>This Shift</span><span>Accumulated</span></div>
+<div class="report-row"><span>1</span><span>850</span><span>4,800</span></div>
+<div class="report-row"><span>2</span><span>920</span><span>5,200</span></div>
+<div class="report-row"><span>3</span><span>780</span><span>5,100</span></div>
+<div class="report-row"><span>4</span><span>900</span><span>4,600</span></div>
+<div class="report-row"><span>5</span><span>750</span><span>4,100</span></div>
+<div class="report-row total"><span>TOTAL</span><span>4,200 MT</span><span>23,800 MT</span></div>
+</div>
+<div class="report-section-title">CALIDAD (QUALITY) - Weighted Avg</div>
+<div class="report-table compact">
+<div class="report-row"><span>Protein</span><span class="ok-text">11.2%</span></div>
+<div class="report-row"><span>Moisture</span><span class="ok-text">13.2%</span></div>
+<div class="report-row"><span>FM</span><span class="warn-text">0.75% ⚠️</span></div>
+<div class="report-row"><span>Broken Grains</span><span class="ok-text">8.5%</span></div>
+<div class="report-row"><span>Total Damaged</span><span class="ok-text">0.20%</span></div>
+<div class="report-row"><span>Test Weight</span><span class="ok-text">78.5 kg/hl</span></div>
+<div class="report-row"><span>Insects</span><span class="ok-text">FREE</span></div>
+<div class="report-row"><span>Temp. Amb/Merc</span><span class="ok-text">20°C / 25°C</span></div>
+</div>
+<div class="report-footer">
+<p style="font-size:9px;color:#888;text-align:left;line-height:1.3;margin-bottom:6px">IMPORTANTE: Este informe refleja los resultados obtenidos tras realizar pruebas rápidas sobre muestras tomadas por nuestros inspectores en el momento y lugar de nuestra intervención. LA CERTIFICACIÓN DE CALIDAD ES EXTENDIDA POR UN LABORATORIO ACREDITADO UNA VEZ TERMINADO EL PROCESO DE CARGA.</p>
+<p class="report-sign">Revisó: Hugo Luxardo · Aprobó: Josefina Mendonça</p>
+<p class="report-sign">Inspector: Juan Pérez · HL Control Services S.A.</p>
+</div>
+</div>
+<div class="recipients-card"><h4><span class="material-icons-round">email</span> Destinatarios</h4>
+<div class="recipient-list">
+<div class="recipient"><span class="material-icons-round">check_circle</span><span>ops@cargill.com</span></div>
+<div class="recipient"><span class="material-icons-round">check_circle</span><span>logistica@cargill.com</span></div>
+</div></div>
+<button class="btn-send-final" onclick="showSentConfirmation()"><span class="material-icons-round">send</span><span>CONFIRMAR Y ENVIAR REPORTE</span></button>
+<div style="height:20px"></div>
+</div>
+</div>
+
+<!-- SCREEN: SETTINGS -->
+<div class="screen" id="screen-settings">
+<div class="top-bar"><div class="top-bar-left">
+<button class="icon-btn" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">arrow_back</span></button>
+<h3 class="top-bar-title">Perfil de Empresa</h3></div></div>
+<div class="screen-body">
+<div class="profile-card">
+<div class="profile-logo-section"><img src="hl-logo.png" alt="HL" class="profile-logo">
+<button class="change-logo-btn"><span class="material-icons-round">edit</span>Cambiar logo</button></div>
+<div class="form-group"><label>Razón Social</label><input type="text" class="form-input" value="HL Control Services S.A."></div>
+</div>
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">palette</span><h4>Personalización</h4></div>
+<div class="form-group"><label>Color Primario</label>
+<div class="color-picker-row">
+<div class="color-swatch active" style="background:#C8A800"></div>
+<div class="color-swatch" style="background:#1a365d"></div>
+<div class="color-swatch" style="background:#065f46"></div>
+<div class="color-swatch" style="background:#7c2d12"></div>
+<input type="color" value="#C8A800" class="color-input-native">
+</div></div></div>
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">group</span><h4>Inspectores</h4></div>
+<div class="inspector-list">
+<div class="inspector-item"><div class="inspector-avatar">JP</div><div class="inspector-info"><h5>Juan Pérez</h5><p>j.perez@hlcontrol.com.ar</p></div><span class="inspector-role admin">Admin</span></div>
+<div class="inspector-item"><div class="inspector-avatar">MG</div><div class="inspector-info"><h5>María García</h5><p>m.garcia@hlcontrol.com.ar</p></div><span class="inspector-role">Inspector</span></div>
+<div class="inspector-item"><div class="inspector-avatar">CR</div><div class="inspector-info"><h5>Carlos Rodríguez</h5><p>c.rodriguez@hlcontrol.com.ar</p></div><span class="inspector-role">Inspector</span></div>
+</div>
+<button class="btn-add-shipper"><span class="material-icons-round">person_add</span><span>Agregar Inspector</span></button></div>
+<div class="form-section">
+<div class="form-section-header"><span class="material-icons-round">draw</span><h4>Firmas para Reportes</h4></div>
+<div class="form-group"><label>Revisó</label><input type="text" class="form-input" value="Hugo Luxardo"></div>
+<div class="form-group"><label>Aprobó</label><input type="text" class="form-input" value="Josefina Mendonça"></div></div>
+<button class="btn-primary btn-full" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">save</span><span>GUARDAR</span></button>
+<button class="btn-logout" onclick="navigateTo('screen-welcome')"><span class="material-icons-round">logout</span><span>Cerrar Sesión</span></button>
+<div style="height:20px"></div>
+</div>
+</div>
+
+<!-- SENT OVERLAY -->
+<div class="sent-overlay" id="sentOverlay">
+<div class="sent-content">
+<div class="sent-check"><span class="material-icons-round">check</span></div>
+<h2>¡Reporte Enviado!</h2>
+<p>Informe enviado a 2 destinatarios.</p>
+<button class="btn-primary" onclick="hideSentConfirmation();navigateTo('screen-dashboard')"><span>VOLVER AL INICIO</span></button>
+</div>
+</div>
+
+</div>
+<div class="phone-home-indicator"></div>
+</div>
+
+<!-- DESKTOP SIDEBAR -->
+<div class="info-panel">
+<div class="info-panel-header"><h2>PortInspect <span class="pro-badge-lg">PRO</span></h2><p>v2.2.0 · Multi-Tenant</p></div>
+<div class="info-panel-body">
+<h3>Prototipo v2</h3>
+<p>Navegá las pantallas con los botones de abajo o dentro de la app.</p>
+<div class="screen-list"><h4>Pantallas:</h4>
+<button class="screen-link" onclick="navigateTo('screen-welcome')"><span class="material-icons-round">login</span> Bienvenida</button>
+<button class="screen-link" onclick="navigateTo('screen-company-select')"><span class="material-icons-round">business</span> Elegir Empresa</button>
+<button class="screen-link" onclick="navigateTo('screen-login')"><span class="material-icons-round">lock</span> Login</button>
+<button class="screen-link" onclick="navigateTo('screen-dashboard')"><span class="material-icons-round">dashboard</span> Dashboard</button>
+<button class="screen-link" onclick="navigateTo('screen-new-op')"><span class="material-icons-round">add_circle</span> Nueva Operación</button>
+<button class="screen-link" onclick="navigateTo('screen-shift-menu')"><span class="material-icons-round">menu</span> Menú del Turno</button>
+<button class="screen-link" onclick="navigateTo('screen-quantity')"><span class="material-icons-round">scale</span> Cantidad</button>
+<button class="screen-link" onclick="navigateTo('screen-quality')"><span class="material-icons-round">science</span> Calidad</button>
+<button class="screen-link" onclick="navigateTo('screen-sof')"><span class="material-icons-round">event_note</span> SOF</button>
+<button class="screen-link" onclick="navigateTo('screen-report')"><span class="material-icons-round">email</span> Reporte</button>
+<button class="screen-link" onclick="navigateTo('screen-settings')"><span class="material-icons-round">settings</span> Perfil Empresa</button>
+</div></div>
+<div class="info-panel-footer"><p>Diseñado para <strong>HL Control Services S.A.</strong></p></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
