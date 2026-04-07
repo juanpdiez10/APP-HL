@@ -1,0 +1,6 @@
+/* ADDED UPPERCASE SUPPORT */
+input[type="text"], input[list], textarea { text-transform: uppercase; }
+
+/* HOLD CHIPS */
+.hold-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.hold-chips .chip { padding: 8px 12px; min-width: 40px; text-align: center; }
